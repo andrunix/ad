@@ -31,19 +31,25 @@ class AD {
       );
     }
 
-    if (String(config.user).indexOf('@') === -1) {
-      throw new Error(
-        'The user must include the fully qualified domain name, such as joe@acme.co.'
-      );
-    }
+    // Let's try not doing this, ok? We may need a CN instead
+    //
+    // if (String(config.user).indexOf('@') === -1) {
+    //   throw new Error(
+    //     'The user must include the fully qualified domain name, such as joe@acme.co.'
+    //   );
+    // }
 
     config.domain = String(config.user).split('@')[1];
 
     if (config.baseDN === undefined) {
-      config.baseDN = config.domain.split('.').map(n => `DC=${n}`).join(',');
+      config.baseDN = config.domain
+        .split('.')
+        .map(n => `DC=${n}`)
+        .join(',');
     }
 
     config = Object.assign(configFile, config);
+    console.log('config: ', config);
 
     this.config = config;
 
